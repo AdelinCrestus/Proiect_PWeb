@@ -14,14 +14,14 @@ public sealed class ReservationProjectionSpec : BaseSpec<ReservationProjectionSp
         Table = new()
         {//TODO: nu cred ca e ok, trb cautat la ce deja exista in baza, daca nu exista adaug
             Id = e.Table.Id,
-            Location = e.Table.Location, //new()
-            /*{
+            Location = /*e.Table.Location, */new()
+            {
                 Id = e.Table.Location.Id,
                 Name = e.Table.Location.Name,
                 Address = e.Table.Location.Address,
                 OpeningHour = e.Table.Location.OpeningHour,
                 ClosingHour = e.Table.Location.ClosingHour
-            },*/
+            },
             Quantity = e.Table.Quantity
         }
     };

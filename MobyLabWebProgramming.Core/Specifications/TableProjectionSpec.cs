@@ -11,15 +11,15 @@ public sealed class TableProjectionSpec : BaseSpec<TableProjectionSpec, Table, T
     protected override Expression<Func<Table, TableDTO>> Spec => e => new()
     {
         Id = e.Id,
-        Location = e.Location,
-        /*Location = new()
+       // Location = e.Location,
+        Location = new()
         {
             Id = e.Location.Id,
             Name = e.Location.Name,
             Address = e.Location.Address,
             OpeningHour = e.Location.OpeningHour,
             ClosingHour = e.Location.ClosingHour
-        },*/
+        },
         Description = e.Description,
         Quantity = e.Quantity
     };
@@ -37,6 +37,6 @@ public sealed class TableProjectionSpec : BaseSpec<TableProjectionSpec, Table, T
 
         var searchExpr = $"%{search.Replace(" ", "%")}%";
 
-        Query.Where(e => EF.Functions.ILike(e.Location, searchExpr));
+        Query.Where(e => EF.Functions.ILike(e.Location.Name, searchExpr));
     }
 }

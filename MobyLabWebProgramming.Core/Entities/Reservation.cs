@@ -13,4 +13,6 @@ public class Reservation : BaseEntity
     public string optionalDetails { get; set; } = default!;
     public Guid TableId { get; set; }
     public Table Table { get; set; } = default!;
+    public Guid UserId { get; set; } = default!;
+    //Todo: Add UserId
 }

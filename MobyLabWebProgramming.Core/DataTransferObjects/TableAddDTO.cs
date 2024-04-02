@@ -2,7 +2,7 @@
 
 public class TableAddDTO
 {
-    public string Location { get; set; }
+    public Guid LocationId { get; set; }
     public String Description { get; set; }
     public int Quantity { get; set; }
 }

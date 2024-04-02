@@ -76,6 +76,9 @@ namespace MobyLabWebProgramming.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("optionalDetails")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -207,7 +210,7 @@ namespace MobyLabWebProgramming.Infrastructure.Migrations
             modelBuilder.Entity("MobyLabWebProgramming.Core.Entities.Table", b =>
                 {
                     b.HasOne("MobyLabWebProgramming.Core.Entities.Location", "Location")
-                        .WithMany()
+                        .WithMany("Tables")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -224,6 +227,11 @@ namespace MobyLabWebProgramming.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MobyLabWebProgramming.Core.Entities.Location", b =>
+                {
+                    b.Navigation("Tables");
                 });
 
             modelBuilder.Entity("MobyLabWebProgramming.Core.Entities.Table", b =>

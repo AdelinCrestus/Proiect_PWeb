@@ -12,8 +12,6 @@ public class ReservationDTO
     public DateTime Start { get; set; } = default!;
     public DateTime End { get; set; } = default!;
     public TableDTO Table { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-
+    public string OptionalDetails { get; set; } = default!;
 
 }

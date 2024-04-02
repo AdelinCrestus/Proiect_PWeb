@@ -71,6 +71,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddEndpointsApiExplorer()
             .AddMvc()
             .AddJsonOptions(options => {
+                options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // Adds a conversion by name of the enums, otherwise numbers representing the enum values are used.
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // This converts the public property names of the objects serialized to Camel case.
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true; // When deserializing request the properties of the JSON are mapped ignoring the casing.
@@ -175,6 +176,7 @@ public static class WebApplicationBuilderExtensions
             .AddTransient<IUserFileService, UserFileService>()
             .AddTransient<ITableService, TableService>()
             .AddTransient<IReservationService, ReservationService>()
+            .AddTransient<ILocationService, LocationService>()
             .AddTransient<IMailService, MailService>();
 
         return builder;

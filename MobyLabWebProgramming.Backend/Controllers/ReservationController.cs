@@ -20,12 +20,12 @@ public class ReservationController : AuthorizedController
     }
 
     [Authorize, HttpGet("{tableId:guid}")]
-    public async Task<ActionResult<RequestResponse<PagedResponse<ReservationDTO>>>> GetPage([FromQuery] PaginationSearchQueryParams pagination, [FromRoute] Guid tableId)
+    public async Task<ActionResult<RequestResponse<List<ReservationDTO>>>> GetAvailableReservations([FromRoute] Guid tableId, [FromQuery] DateTime day)
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _reservationService.GetAvailableReservations(pagination, tableId)) :
-            this.ErrorMessageResult<PagedResponse<ReservationDTO>>(currentUser.Error);
+            this.FromServiceResponse(await _reservationService.GetAvailableReservations(tableId, DateOnly.FromDateTime(day) )) :
+            this.ErrorMessageResult<List<ReservationDTO>>(currentUser.Error);
     }
 
     [Authorize, HttpPost]
@@ -33,7 +33,7 @@ public class ReservationController : AuthorizedController
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _reservationService.AddReservation(form)) :
+            this.FromServiceResponse(await _reservationService.AddReservation(form, requestingUser: currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 
@@ -42,7 +42,7 @@ public class ReservationController : AuthorizedController
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _reservationService.DeleteReservation(id)) : 
+            this.FromServiceResponse(await _reservationService.DeleteReservation(id, requestingUser: currentUser.Result)) : 
             this.ErrorMessageResult(currentUser.Error);
     }
 }

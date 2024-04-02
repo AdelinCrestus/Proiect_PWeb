@@ -13,8 +13,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
         builder.Property(e => e.Start).IsRequired();
         builder.Property(e => e.End).IsRequired();
         builder.Property(e => e.optionalDetails)
-            .HasMaxLength(255)
-            .IsRequired();
+            .HasMaxLength(255);
 
         builder.HasOne(e => e.Table)
             .WithMany(e => e.Reservations)

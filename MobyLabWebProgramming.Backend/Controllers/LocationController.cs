@@ -11,40 +11,41 @@ namespace MobyLabWebProgramming.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class TableController : AuthorizedController
+public class LocationController : AuthorizedController
 {
-    private readonly ITableService _tableService;
-    public TableController(IUserService userService, ITableService tableService) : base(userService)
+    private readonly ILocationService _locationService;
+    public LocationController(IUserService userService, ILocationService locationService) : base(userService)
     {
-        _tableService = tableService;
+        _locationService = locationService;
     }
 
     [Authorize]
     [HttpGet]
-    public async Task<ActionResult<RequestResponse<PagedResponse<TableDTO>>>> GetPage([FromQuery] PaginationSearchQueryParams pagination)
+    public async Task<ActionResult<RequestResponse<PagedResponse<LocationDTO>>>> GetLocations([FromQuery] PaginationSearchQueryParams pagination)
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _tableService.GetTables(pagination)) :
-            this.ErrorMessageResult<PagedResponse<TableDTO>>(currentUser.Error);
+            this.FromServiceResponse(await _locationService.GetLocations(pagination)) :
+            this.ErrorMessageResult<PagedResponse<LocationDTO>>();
     }
 
-    [Authorize, HttpGet("{id:guid}")]
-    public async Task<ActionResult<RequestResponse<TableDTO>>> GetById([FromRoute] Guid id)
+    [Authorize]
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<RequestResponse<LocationDTO>>> GetById([FromRoute] Guid id)
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _tableService.GetTable(id)) :
-            this.ErrorMessageResult<TableDTO>(currentUser.Error);
+            this.FromServiceResponse(await _locationService.GetLocation(id)) :
+            this.ErrorMessageResult<LocationDTO>();
     }
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<RequestResponse>> Add([FromForm] TableAddDTO form)
+    public async Task<ActionResult<RequestResponse>> Add([FromForm] LocationAddDTO form)
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _tableService.SaveTable(form, requestingUser: currentUser.Result)) :
+            this.FromServiceResponse(await _locationService.AddLocation(form, requestingUser: currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
 
     }
@@ -55,8 +56,7 @@ public class TableController : AuthorizedController
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _tableService.DeleteTable(id, requestingUser: currentUser.Result)) :
+            this.FromServiceResponse(await _locationService.DeleteLocation(id, requestingUser: currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
-
 }
